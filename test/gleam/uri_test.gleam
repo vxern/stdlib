@@ -6,6 +6,55 @@ import gleam/should
 import gleam/string
 import gleam/uri
 
+pub fn set_scheme_test() {
+  let uri =
+    uri.Uri(None, None, None, None, "", None, None)
+    |> uri.set_scheme("https")
+  should.equal(uri.scheme, Some("https"))
+}
+
+pub fn set_userinfo_test() {
+  let uri =
+    uri.Uri(None, None, None, None, "", None, None)
+    |> uri.set_userinfo("user:password")
+  should.equal(uri.userinfo, Some("user:password"))
+}
+
+pub fn set_host_test() {
+  let uri =
+    uri.Uri(None, None, None, None, "", None, None)
+    |> uri.set_host("gleam.run")
+  should.equal(uri.host, Some("gleam.run"))
+}
+
+pub fn set_port_test() {
+  let uri =
+    uri.Uri(None, None, None, None, "", None, None)
+    |> uri.set_port(8080)
+  should.equal(uri.port, Some(8080))
+}
+
+pub fn set_path_test() {
+  let uri =
+    uri.Uri(None, None, None, None, "", None, None)
+    |> uri.set_path("/community/")
+  should.equal(uri.path, "/community/")
+}
+
+pub fn set_query_test() {
+  let uri =
+    uri.Uri(None, None, None, None, "", None, None)
+    |> uri.set_query("parameter=value&parameter_two=another_value")
+  should.equal(uri.query, Some("parameter=value&parameter_two=another_value"))
+}
+
+pub fn set_fragment_test() {
+  let uri =
+    uri.Uri(None, None, None, None, "", None, None)
+    |> uri.set_fragment("main_section")
+  should.equal(uri.fragment, Some("main_section"))
+}
+
 pub fn full_parse_test() {
   let assert Ok(parsed) =
     uri.parse("https://weebl:bob@example.com:1234/path?query=true#fragment")

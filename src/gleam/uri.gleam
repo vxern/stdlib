@@ -34,6 +34,54 @@ pub type Uri {
   )
 }
 
+/// Sets the `scheme` of the URI, specifying the protocol or type of application
+/// used to open or address the resource.
+///
+pub fn set_scheme(uri: Uri, scheme: String) -> Uri {
+  Uri(..uri, scheme: Some(scheme))
+}
+
+/// Sets the `userinfo` of the URI, specifying the credentials used to identify
+/// the user.
+///
+pub fn set_userinfo(uri: Uri, userinfo: String) -> Uri {
+  Uri(..uri, userinfo: Some(userinfo))
+}
+
+/// Sets the `host` of the URI, identifying the location of a resource.
+///
+pub fn set_host(uri: Uri, host: String) -> Uri {
+  Uri(..uri, host: Some(host))
+}
+
+/// Sets the `port` of the URI, specifying the protocol port used in retrieving
+/// or addressing the resource.
+///
+pub fn set_port(uri: Uri, port: Int) -> Uri {
+  Uri(..uri, port: Some(port))
+}
+
+/// Sets the `path` of the URI, identifying the path or endpoint that the resource
+/// is available under.
+///
+pub fn set_path(uri: Uri, path: String) -> Uri {
+  Uri(..uri, path: path)
+}
+
+/// Sets the `query` of the URI, specifying a query used in providing an arbitrary
+/// set of parameters in interrogating the resource.
+///
+pub fn set_query(uri: Uri, query: String) -> Uri {
+  Uri(..uri, query: Some(query))
+}
+
+/// Sets the `fragment` of the URI, pointing to a more precise part or section of
+/// the resource.  
+///
+pub fn set_fragment(uri: Uri, fragment: String) -> Uri {
+  Uri(..uri, fragment: Some(fragment))
+}
+
 /// Parses a compliant URI string into the `Uri` Type.
 /// If the string is not a valid URI string then an error is returned.
 ///
