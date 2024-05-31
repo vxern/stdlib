@@ -18,51 +18,38 @@ pub fn new_test() {
 }
 
 pub fn set_scheme_test() {
-  let uri =
-    uri.Uri(None, None, None, None, "", None, None)
-    |> uri.set_scheme("https")
+  let uri = uri.new() |> uri.set_scheme("https")
   should.equal(uri.scheme, Some("https"))
 }
 
 pub fn set_userinfo_test() {
-  let uri =
-    uri.Uri(None, None, None, None, "", None, None)
-    |> uri.set_userinfo("user:password")
+  let uri = uri.new() |> uri.set_userinfo("user:password")
   should.equal(uri.userinfo, Some("user:password"))
 }
 
 pub fn set_host_test() {
-  let uri =
-    uri.Uri(None, None, None, None, "", None, None)
-    |> uri.set_host("gleam.run")
+  let uri = uri.new() |> uri.set_host("gleam.run")
   should.equal(uri.host, Some("gleam.run"))
 }
 
 pub fn set_port_test() {
-  let uri =
-    uri.Uri(None, None, None, None, "", None, None)
-    |> uri.set_port(8080)
+  let uri = uri.new() |> uri.set_port(8080)
   should.equal(uri.port, Some(8080))
 }
 
 pub fn set_path_test() {
-  let uri =
-    uri.Uri(None, None, None, None, "", None, None)
-    |> uri.set_path("/community/")
+  let uri = uri.new() |> uri.set_path("/community/")
   should.equal(uri.path, "/community/")
 }
 
 pub fn set_query_test() {
   let uri =
-    uri.Uri(None, None, None, None, "", None, None)
-    |> uri.set_query("parameter=value&parameter_two=another_value")
+    uri.new() |> uri.set_query("parameter=value&parameter_two=another_value")
   should.equal(uri.query, Some("parameter=value&parameter_two=another_value"))
 }
 
 pub fn set_fragment_test() {
-  let uri =
-    uri.Uri(None, None, None, None, "", None, None)
-    |> uri.set_fragment("main_section")
+  let uri = uri.new() |> uri.set_fragment("main_section")
   should.equal(uri.fragment, Some("main_section"))
 }
 
@@ -273,93 +260,132 @@ pub fn full_uri_to_string_test() {
 }
 
 pub fn path_only_uri_to_string_test() {
-  uri.Uri(None, None, None, None, "/", None, None)
+  uri.new()
+  |> uri.set_path("/")
   |> uri.to_string
   |> should.equal("/")
 
-  uri.Uri(None, None, None, None, "/teapot", None, None)
+  uri.new()
+  |> uri.set_path("/teapot")
   |> uri.to_string
   |> should.equal("/teapot")
 
-  uri.Uri(None, Some("user"), None, None, "/teapot", None, None)
+  uri.new()
+  |> uri.set_userinfo("user")
+  |> uri.set_path("/teapot")
   |> uri.to_string
   |> should.equal("/teapot")
 
-  uri.Uri(None, None, None, None, "", None, None)
+  uri.new()
   |> uri.to_string
   |> should.equal("")
 }
 
 pub fn scheme_to_string_test() {
-  uri.Uri(Some("ftp"), None, None, None, "thing.txt", None, None)
+  uri.new()
+  |> uri.set_scheme("ftp")
+  |> uri.set_path("thing.txt")
   |> uri.to_string
   |> should.equal("ftp:thing.txt")
 
-  uri.Uri(Some("ftp"), None, None, None, "", None, None)
+  uri.new()
+  |> uri.set_scheme("ftp")
   |> uri.to_string
   |> should.equal("ftp:")
 
-  uri.Uri(Some("ftp"), Some("ignored"), None, None, "", None, None)
+  uri.new()
+  |> uri.set_scheme("ftp")
+  |> uri.set_userinfo("ignored")
   |> uri.to_string
   |> should.equal("ftp:")
 
-  uri.Uri(Some("https"), None, None, None, "/one/two", None, None)
+  uri.new()
+  |> uri.set_scheme("https")
+  |> uri.set_path("/one/two")
   |> uri.to_string
   |> should.equal("https:/one/two")
 
-  uri.Uri(None, None, None, None, "noslash", None, Some("frag"))
+  uri.new()
+  |> uri.set_path("noslash")
+  |> uri.set_fragment("frag")
   |> uri.to_string
   |> should.equal("noslash#frag")
 }
 
 pub fn host_to_string_test() {
-  uri.Uri(Some("ftp"), None, Some("example.com"), None, "", None, None)
+  uri.new()
+  |> uri.set_scheme("ftp")
+  |> uri.set_host("example.com")
   |> uri.to_string
   |> should.equal("ftp://example.com/")
 
-  uri.Uri(None, None, Some("example.com"), None, "", None, None)
+  uri.new()
+  |> uri.set_host("example.com")
   |> uri.to_string
   |> should.equal("//example.com/")
 
-  uri.Uri(None, None, Some("example.com"), None, "/slash", None, None)
+  uri.new()
+  |> uri.set_host("example.com")
+  |> uri.set_path("/slash")
   |> uri.to_string
   |> should.equal("//example.com/slash")
 
-  uri.Uri(None, None, Some("example.com"), None, "noslash", None, None)
+  uri.new()
+  |> uri.set_host("example.com")
+  |> uri.set_path("noslash")
   |> uri.to_string
   |> should.equal("//example.com/noslash")
 
-  uri.Uri(None, None, Some(""), None, "", None, None)
+  uri.new()
+  |> uri.set_host("")
   |> uri.to_string
   |> should.equal("//")
 
-  uri.Uri(None, None, Some("example.com"), None, "noslash", None, Some("ok"))
+  uri.new()
+  |> uri.set_host("example.com")
+  |> uri.set_path("noslash")
+  |> uri.set_fragment("ok")
   |> uri.to_string
   |> should.equal("//example.com/noslash#ok")
 
-  uri.Uri(None, None, Some(""), None, "", None, Some("ok"))
+  uri.new()
+  |> uri.set_host("")
+  |> uri.set_fragment("ok")
   |> uri.to_string
   |> should.equal("//#ok")
 }
 
 pub fn port_to_string_test() {
-  uri.Uri(Some("ftp"), None, Some("example.com"), Some(80), "", None, None)
+  uri.new()
+  |> uri.set_scheme("ftp")
+  |> uri.set_host("example.com")
+  |> uri.set_port(80)
   |> uri.to_string
   |> should.equal("ftp://example.com:80/")
 
-  uri.Uri(None, None, Some("example.com"), Some(40), "", None, None)
+  uri.new()
+  |> uri.set_host("example.com")
+  |> uri.set_port(40)
   |> uri.to_string
   |> should.equal("//example.com:40/")
 
-  uri.Uri(None, None, Some("example.com"), Some(80), "/slash", None, None)
+  uri.new()
+  |> uri.set_host("example.com")
+  |> uri.set_port(80)
+  |> uri.set_path("/slash")
   |> uri.to_string
   |> should.equal("//example.com:80/slash")
 
-  uri.Uri(None, None, Some("example.com"), Some(81), "noslash", None, None)
+  uri.new()
+  |> uri.set_host("example.com")
+  |> uri.set_port(81)
+  |> uri.set_path("noslash")
   |> uri.to_string
   |> should.equal("//example.com:81/noslash")
 
-  uri.Uri(None, None, None, Some(81), "noslash", None, None)
+  uri.new()
+  |> uri.set_port(81)
+  |> uri.set_path("noslash")
   |> uri.to_string
   |> should.equal("noslash")
 }
