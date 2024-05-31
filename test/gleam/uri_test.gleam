@@ -6,6 +6,17 @@ import gleam/should
 import gleam/string
 import gleam/uri
 
+pub fn new_test() {
+  let uri = uri.new()
+  should.equal(uri.scheme, None)
+  should.equal(uri.userinfo, None)
+  should.equal(uri.host, None)
+  should.equal(uri.port, None)
+  should.equal(uri.path, "")
+  should.equal(uri.query, None)
+  should.equal(uri.fragment, None)
+}
+
 pub fn set_scheme_test() {
   let uri =
     uri.Uri(None, None, None, None, "", None, None)

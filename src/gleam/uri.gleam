@@ -34,6 +34,32 @@ pub type Uri {
   )
 }
 
+/// Creates a `Uri` object with a minimal set of values.
+/// 
+/// This object would usually be used as a base for constructing a more complete
+/// `Uri`.
+/// 
+/// ## Examples
+/// 
+/// ```gleam
+/// new()
+/// |> set_scheme("https")
+/// |> set_host("github.com")
+/// |> set_path("/gleam-lang/gleam")
+/// ```
+///
+pub fn new() -> Uri {
+  Uri(
+    scheme: None,
+    userinfo: None,
+    host: None,
+    port: None,
+    path: "",
+    query: None,
+    fragment: None,
+  )
+}
+
 /// Sets the `scheme` of the URI, specifying the protocol or type of application
 /// used to open or address the resource.
 ///
